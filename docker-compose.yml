@@ -1,0 +1,29 @@
+version: '3.8'
+services:
+  mongo:
+    image: mongo:7.0
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: SkyLawson
+      MONGO_INITDB_ROOT_PASSWORD: RaidenIsEternal
+    volumes:
+      - mongodata:/data/db
+    networks:
+      - backend
+
+  multi_tenant_app:
+    build:
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    depends_on:
+      - mongo
+    networks:
+      - backend
+
+volumes:
+  mongodata:
+    driver: local
+networks:
+  backend:
